@@ -34,3 +34,4 @@ Note: I got this working first then went back and documented this. I might have 
     ```
 2. Whatever folder you run `code .` or `wsl code .` in will be your working folder. This is important for generated artifacts, including `.vscode` folders & contents.
 3. Running `bash` will start your WSL VM up. Running `wsl --shutdown` will shut it down. Mine does not run automatically but is very fast to boot when I start it up.
+4. If you don't have gcc installed, you must install it. I used: `sudo apt install g++` to install it. In order to tell if you have it installed, run: `g++ -v`

@@ -12,7 +12,7 @@
 8. Open a `.ipynb` file in VSCode or create a new notebook: <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> -> "Python: Create New Blank Jupyter Notebook"
 9. Try to run the notebook. If you created a new one, add a new cell with `print(1)` as the only line of code and it <kbd>SHIFT</kbd> + <kbd>ENTER</kbd> to run that cell, or use the toolbar icons. It should output "1". At this point, things work! Now we just need to create/setup our Anaconda environment(s).
 10. Open an Anaconda console window: Start -> Anaconda PowerShell Prompt (Anaconda3)
-11. Create a new environment: `conda create -n fluffybunnyname python=3.7.4` (You may need to use a different version of Python. 3.7.4 is what I installed with Anaconda.)
+11. Create a new environment: `conda create -n fluffybunnyname python=3.7` (You may need to use a different version of Python. 3.7 is what I installed with Anaconda.)
 12. If you wish to do anything with this enviornment in this window, activate it: `conda activate fluffybunnyname`
 13. In VSCode, set the Python Venv Path setting. Go to Settings (<kbd>CTRL</kbd> + <kbd>,</kbd>), search for `python.venvPath`, and set it to where the `envs` folder from Anaconda, which is displayed in the above console window. For me, it was: `C:\Users\Shane\Anaconda3\envs` or more simply `~\Anaconda3\envs`
 14. In VSCode, you can select your environment via <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> -> "Python: Select Interpreter". Note: It can take several minutes before a new environment can show up here. This is super annoying. If the "Starting Jupyter Server" message seems to spin forever or you never see your new environment, try some of the following things:
