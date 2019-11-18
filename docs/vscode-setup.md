@@ -1,5 +1,5 @@
 <!-- markdownlint-disable MD033 -->
-# This is documeting my attempt to get Jupyter working in VSCode and VSCode working with github repos
+# This is documenting my attempt to get Jupyter working in VSCode and VSCode working with github repos
 
 1. Install VSCode: <https://code.visualstudio.com/>
 2. Install git: <https://git-scm.com/downloads>
