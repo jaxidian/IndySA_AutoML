@@ -15,6 +15,8 @@ namespace ml.net
     {
         static void Main(string[] args)
         {
+            // ************
+            // Set run duration, override with optional args
             uint trainingDurationInSeconds = 60;
             if (args != null && args.Length > 0 && uint.TryParse(args[0], out trainingDurationInSeconds))
             {
@@ -22,6 +24,9 @@ namespace ml.net
             }
 
             var mlContext = new MLContext();
+
+            // ************
+            // Load data from CSVs
             var trainData = mlContext.Data.LoadFromTextFile(path: "../../data/optdigits-train.csv",
                                     columns : new[] 
                                     {
@@ -41,12 +46,20 @@ namespace ml.net
                                     separatorChar: ','
                                     );
 
+            // ************
+            // This is the magic sauce! This does it all!
             ExperimentResult<MulticlassClassificationMetrics> experimentResult = mlContext.Auto()
                 .CreateMulticlassClassificationExperiment((uint)Math.Max(trainingDurationInSeconds, 30))
                 .Execute(trainData, nameof(InputData.Number));
 
+            // ************
+            // Let's get the real performance of our hero model
             var heroModel = experimentResult.BestRun;
+            var predictions = heroModel.Model.Transform(testData);
+            var metrics = mlContext.MulticlassClassification.Evaluate(predictions, nameof(InputData.Number));
 
+            // ************
+            // Serialize hero model to binary (savable to disk, database, deployable to mobile app or hostable via REST service)
             byte[] binaryModel;
             using (var memoryStream = new MemoryStream())
             {
@@ -54,19 +67,25 @@ namespace ml.net
                 binaryModel = memoryStream.ToArray();
             }
 
+            // ************
+            // Let's look at stuff
+
+            // Binary
             Console.WriteLine($"Best model binary to save for use later out of {experimentResult.RunDetails.Count()} trained models:");
             Console.WriteLine(BitConverter.ToString(binaryModel).Substring(0, 33) + "...");
 
+            // Hero model training metrics
             Console.WriteLine("*********************");
             Console.WriteLine("Hero Model Training Metrics:");
             Console.WriteLine(JsonConvert.SerializeObject(heroModel.ValidationMetrics, Formatting.Indented).Substring(0, 600));
 
-            var predictions = experimentResult.BestRun.Model.Transform(testData);
-            var metrics = mlContext.MulticlassClassification.Evaluate(predictions, nameof(InputData.Number));
+            // Hero model evaluation metrics
             Console.WriteLine("*********************");
             Console.WriteLine("Hero Model Evaluation Metrics:");
             Console.WriteLine(JsonConvert.SerializeObject(metrics, Formatting.Indented).Substring(0, 600));
 
+            // ************
+            // Let's deserialize our binary and use it!
             var newPredictionMlContext = new MLContext();
             ITransformer predictionModel;
             using (var stream = new MemoryStream(binaryModel))
@@ -74,13 +93,17 @@ namespace ml.net
                 predictionModel = newPredictionMlContext.Model.Load(stream, out _);
             }
 
-            var predEngine = newPredictionMlContext.Model.CreatePredictionEngine<InputData, OutputData>(predictionModel);
-            var predictionScenarios = new InputData[]{SampleMNISTData.MNIST1,SampleMNISTData.MNIST2};
+            // ************
+            // This is now our super-smart engine that can read handwriting!
+            var predictionEngine = newPredictionMlContext.Model.CreatePredictionEngine<InputData, OutputData>(predictionModel);
 
+            // ************
+            // Let's test it. Here we go!
+            var predictionScenarios = new InputData[]{SampleMNISTData.MNIST1,SampleMNISTData.MNIST2};
             Console.WriteLine("*********************");
             foreach (var input in predictionScenarios)
             {
-                var predictionResult = predEngine.Predict(input);
+                var predictionResult = predictionEngine.Predict(input);
 
                 Console.WriteLine($"Predicted probability:       zero:  {predictionResult.Score[0]:0.####}");
                 Console.WriteLine($"                             one :  {predictionResult.Score[1]:0.####}");
