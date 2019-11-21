@@ -23,6 +23,8 @@ namespace ml.net
                 Console.WriteLine($"Overriding training time, setting for {trainingDurationInSeconds} seconds.");
             }
 
+            // ************
+            // ml.net Context Creation
             var mlContext = new MLContext();
 
             // ************
