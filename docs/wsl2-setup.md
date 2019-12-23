@@ -8,7 +8,7 @@ Note: I got this working first then went back and documented this. I might have 
    1. Under Windows Features, enable "Virtual Machine Platform" and "Windows Subsystem for Linux"
    2. Install distributions via Windows Store. I chose Ubuntu.
    3. Switch WSL to v2: `wsl --set-version <distro> 2`.<br/>Ex: `wsl --set-version Ubuntu 2`
-   4. There is a bug ([1](https://github.com/microsoft/WSL/issues/4275), [2](https://github.com/microsoft/WSL/issues/4285)) in WSL2 currently that breaks DNS. The fix is [documented here](https://gist.github.com/coltenkrauter/608cfe02319ce60facd76373249b8ca6#file-fix-wsl2-dns-resolution-L4). A quick `wsl ping google` will tell you if you have issues or not. I had to unlink a symlink on `resolv.conf` as part of my fix for this issue.
+   4. There is a bug ([1](https://github.com/microsoft/WSL/issues/4275), [2](https://github.com/microsoft/WSL/issues/4285)) in WSL2 currently that breaks DNS. The fix is [documented here](https://gist.github.com/coltenkrauter/608cfe02319ce60facd76373249b8ca6#file-fix-wsl2-dns-resolution-L4). A quick `wsl ping google.com` will tell you if you have issues or not. I had to unlink a symlink on `resolv.conf` as part of my fix for this issue.
    3. Update and secure your Linux distro appropriately.
 3. Install VSCode's [`Python` extension](https://marketplace.visualstudio.com/items?itemName=ms-python.pythond).
 4. Install VSCode's [`Remote - WSL` extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl).
